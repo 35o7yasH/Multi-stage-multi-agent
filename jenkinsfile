@@ -9,14 +9,26 @@ pipeline {
         sh 'mvn --version'
       }
     }
+
     stage('Front-end') {
       agent {
         docker { image 'node:16-alpine' }
       }
       steps {
-        sh 'node --version'
+        sh '''
+          echo "Checking Node.js version..."
+          node --version
+
+          echo "Checking npm version..."
+          npm --version
+
+          echo "Installing create-react-app globally..."
+          npm install -g create-react-app
+
+          echo "Checking create-react-app (React CLI) version..."
+          create-react-app --version
+        '''
       }
     }
   }
 }
-
